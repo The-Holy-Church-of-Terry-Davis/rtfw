@@ -3,7 +3,7 @@ defmodule Rtfw.CommandRouter do
   Very simple command router.
   """
 
-  alias Nostrum.Api
+  # alias Nostrum.Api
   alias Rtfw.Commands
 
   @commands %{
