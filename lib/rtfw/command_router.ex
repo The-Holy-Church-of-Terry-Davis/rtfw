@@ -4,9 +4,10 @@ defmodule Rtfw.CommandRouter do
   """
 
   alias Nostrum.Api
+  alias Rtfw.Commands
 
   @commands %{
-    "info" => &__MODULE__.info/2
+    "info" => &Commands.Info.info/2
   }
 
   @prefix "rtfw "
@@ -21,7 +22,4 @@ defmodule Rtfw.CommandRouter do
 
   def dispatch(_content, _msg), do: :ignore
 
-  def info(msg, _args) do
-    Api.Message.create(msg.channel_id, "Built using [nostrum](https://github.com/Kraigie/nostrum).")
-  end
 end
