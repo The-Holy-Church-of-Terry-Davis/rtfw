@@ -1,11 +1,15 @@
 defmodule Rtfw.Bot do
-  use Nostrum.Consumer
+  use GenServer
+  alias Rtfw.Discord.Gateway
 
-  alias Rtfw.CommandRouter
-
-  def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
-    CommandRouter.dispatch(msg.content, msg)
+  def start_link() do
+    GenServer.start_link(__MODULE__, name: __MODULE__)
   end
 
-  def handle_event(_event), do: :noop
+  @impl true
+  def init(_opts) do
+    Gateway.try_connect()
+    {:ok, %{}}
+  end
+
 end
