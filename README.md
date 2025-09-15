@@ -2,7 +2,14 @@
 
 Read the f*cking wiki!
 
-Discord bot built with nostrum.
+Discord bot using NO API wrausing NO API wrappers.
 
+## Todo
+- [ ] delete and edit message via `message_id` (`api.ex`)
+- [ ] embed builder
+- [ ] actually fetch from the wiki (add wiki url to `:config rtfw`)
 
-Up-to-date nostrum docs: https://hexdocs.pm/nostrum/intro.html
+## Dev notes
+Look into https://hexdocs.pm/elixir/1.4.5/behaviours.html
+
+Look into redoing `gateway.ex`, `bot.ex`, etc.

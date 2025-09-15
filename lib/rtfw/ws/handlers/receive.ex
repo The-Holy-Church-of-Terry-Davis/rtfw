@@ -16,10 +16,16 @@ defmodule Rtfw.Ws.Handlers.Receive do
     op = Map.get(data, "op")
 
     cond do
+      op == 0 ->
+        event_type = Map.get(data, "t")
+        # handle_dispatch(event_type, data, state)
+        Rtfw.Discord.EventHandler.handle(event_type, data, state)
+
       op == 10 ->
         IO.puts "Received Hello (opcode 10) from Discord"
         heartbeat_interval = data |> Map.get("d") |> Map.get("heartbeat_interval")
         manage_heartbeat(heartbeat_interval)
+        Process.send(self(), :send_identify, [])
         {:ok, state}
       
       op == 11 ->

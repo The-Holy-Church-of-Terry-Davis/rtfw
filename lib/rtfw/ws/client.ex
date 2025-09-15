@@ -22,4 +22,22 @@ defmodule Rtfw.Ws.Client do
     IO.puts "Sending heartbeat"
     {:reply, {:text, Jason.encode!(%{op: 1, d: nil})}, state}
   end
+
+  def handle_info(:send_identify, state) do 
+    # https://discord.com/developers/docs/events/gateway#identifying
+    IO.puts "Sending Identify (opcode 2) event..."
+    payload = Jason.encode!(%{
+      op: 2,
+      d: %{
+        token: Rtfw.token(),
+        intents: 33280, # all: https://discord.com/developers/docs/events/gateway#list-of-intents
+        properties: %{
+          os: "agnostic",
+          browser: "RTFW",
+          device: "RTFW"
+        }
+      }
+    })
+    {:reply, {:text, payload}, state}
+  end
 end
