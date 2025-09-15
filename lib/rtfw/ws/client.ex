@@ -18,4 +18,8 @@ defmodule Rtfw.Ws.Client do
     Disconnect.handle(reason, state)
   end
 
+  def handle_info(:send_heartbeat, state) do
+    IO.puts "Sending heartbeat"
+    {:reply, {:text, Jason.encode!(%{op: 1, d: nil})}, state}
+  end
 end

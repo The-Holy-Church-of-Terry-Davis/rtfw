@@ -17,8 +17,10 @@ defmodule Rtfw.Ws.Handlers.Receive do
 
     cond do
       op == 10 ->
+        IO.puts "Received Hello (opcode 10) from Discord"
         heartbeat_interval = data |> Map.get("d") |> Map.get("heartbeat_interval")
-        manage_heartbeat(heartbeat_interval, state)
+        manage_heartbeat(heartbeat_interval)
+        {:ok, state}
       
       op == 11 ->
         IO.puts "Heartbeat ACK from Discord."
@@ -31,12 +33,11 @@ defmodule Rtfw.Ws.Handlers.Receive do
     {:ok, state}
   end
 
-  defp manage_heartbeat(interval, state) do 
+  defp manage_heartbeat(interval) do 
     # https://discord.com/developers/docs/events/gateway#heartbeat-interval
     jitter = :rand.uniform()
-    Task.async(fn ->
-      :timer.sleep(interval * jitter)
-    end)
-    {:ok, state}
+    Process.send_after(self(), :send_heartbeat, round(interval * jitter))
+
+    :timer.send_interval(interval, self(), :send_heartbeat)
   end
 end
