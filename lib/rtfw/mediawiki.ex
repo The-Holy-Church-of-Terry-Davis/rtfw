@@ -32,7 +32,7 @@ defmodule Rtfw.Mediawiki do
       action: "query",
       prop: "extracts",
       explaintext: true,
-      exsentences: 10,
+      exsentences: 2,
       format: "json",
       titles: title
     ]

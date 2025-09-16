@@ -35,8 +35,6 @@ defmodule Rtfw.Ws.Handlers.Receive do
         IO.puts "Rtfw.WS.Handlers.Receive: Unhandled OP code: #{op}"
 
     end
-
-    {:ok, state}
   end
 
   defp manage_heartbeat(interval) do 

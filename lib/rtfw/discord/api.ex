@@ -26,7 +26,7 @@ defmodule Rtfw.Discord.Api do
         {:ok, response_body}
 
       {:error, reason} ->
-        {:error, reason}
+        {:error, reason} 
     end
   end
 

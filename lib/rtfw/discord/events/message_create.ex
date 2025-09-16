@@ -35,39 +35,31 @@ defmodule Rtfw.Discord.Events.MessageCreate do
         {:error, reason}
 
       {:ok, new_message} ->
-        send_response(Rtfw.Mediawiki.query(query), %{q: query, c_id: channel_id, m_id: new_message["id"]})
+        m_id = new_message["id"]
+        send_response(Rtfw.Mediawiki.query(query), %{q: query, c_id: channel_id, m_id: m_id})
 
     end
   end
 
   defp send_response({:no_results, %{}}, details) do
     IO.puts ":no_results from wiki"
-    Discord.Api.edit_message(details["c_id"], details["m_id"], "No pages found.")
+    Discord.Api.edit_message(details[:c_id], details[:m_id], "No pages found.")
   end
 
   defp send_response({:error, :unexpected_response_format}, details) do
     IO.puts ":error from wiki"
-    Discord.Api.edit_message(details["c_id"], details["m_id"], "Unexpected response from the API (ping Trollage).")
+    Discord.Api.edit_message(details[:c_id], details[:m_id], "Unexpected response from the API (ping Trollage).")
   end
 
   defp send_response({:ok, %{title: t, extract: e}}, details) do
     IO.puts ":ok from wiki"
-    c_id = details["c_id"]
-    m_id = details["m_id"]
+    c_id = details[:c_id]
+    m_id = details[:m_id]
+
+    title_with_underscores = String.replace(t, " ", "_")
+    encoded_t = URI.encode_www_form(title_with_underscores)
     
-    case Discord.Api.edit_message(c_id, m_id, "## #{t}\n#{e}") do
-    {:ok, _updated_message} ->
-      IO.puts("Successfully edited the message!")
-
-    {:error, reason} ->
-      # This will now print the exact error!
-      IO.puts("Failed to edit message. Reason: #{inspect(reason)}")
-  end
-
+    Discord.Api.edit_message(c_id, m_id, "### [#{t}](<#{Rtfw.mediawiki_url()}/wiki/#{encoded_t}>)\n#{e}")
   end 
-
-  defp send_response(any, any2) do
-    IO.puts "wtf happened"
-  end
 
 end

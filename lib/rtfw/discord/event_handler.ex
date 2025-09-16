@@ -15,7 +15,6 @@ defmodule Rtfw.Discord.EventHandler do
 
   def handle("MESSAGE_CREATE", data, state) do
     Rtfw.Discord.Events.MessageCreate.handle(data, state)
-    {:ok, state}
   end
 
   def handle(event_type, _data, state) do
