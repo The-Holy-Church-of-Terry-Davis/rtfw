@@ -11,4 +11,8 @@ defmodule Rtfw do
     Application.get_env(:rtfw, :prefix, 0)
   end
 
+  def mediawiki_url do 
+    Application.get_env(:rtfw, :mediawiki_url, 0)
+  end
+
 end

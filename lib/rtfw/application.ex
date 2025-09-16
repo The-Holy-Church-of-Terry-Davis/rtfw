@@ -11,6 +11,9 @@ defmodule Rtfw.Application do
       Rtfw.prefix() == 0 ->
         IO.puts "RTFW/Application: Prefix not found in config.exs"
         :init.stop()
+      Rtfw.mediawiki_url() == 0 ->
+        IO.puts "RTFW/Application: Mediawiki URL not found in config.exs"
+        :init.stop()
       true ->
         IO.puts "RTFW/Application: Loaded config.exs"
     end

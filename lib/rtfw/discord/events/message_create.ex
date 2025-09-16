@@ -24,9 +24,50 @@ defmodule Rtfw.Discord.Events.MessageCreate do
       Discord.Api.create_message(channel_id, "**Built by [reinitd](https://github.com/reinitd).**\n**Repo: **https://github.com/the-holy-church-of-terry-davis/rtfw")
     
     else
-      Discord.Api.create_message(channel_id, "Searching wiki...")
+      search_wiki(query, channel_id)
     end
+  end
 
+  defp search_wiki(query, channel_id) do
+    case Discord.Api.create_message(channel_id, "Searching the wiki...") do
+      {:error, reason} ->
+        IO.puts "Rtfw.Discord.Events.MessageCreate: API call failed because: #{inspect(reason)}"
+        {:error, reason}
+
+      {:ok, new_message} ->
+        send_response(Rtfw.Mediawiki.query(query), %{q: query, c_id: channel_id, m_id: new_message["id"]})
+
+    end
+  end
+
+  defp send_response({:no_results, %{}}, details) do
+    IO.puts ":no_results from wiki"
+    Discord.Api.edit_message(details["c_id"], details["m_id"], "No pages found.")
+  end
+
+  defp send_response({:error, :unexpected_response_format}, details) do
+    IO.puts ":error from wiki"
+    Discord.Api.edit_message(details["c_id"], details["m_id"], "Unexpected response from the API (ping Trollage).")
+  end
+
+  defp send_response({:ok, %{title: t, extract: e}}, details) do
+    IO.puts ":ok from wiki"
+    c_id = details["c_id"]
+    m_id = details["m_id"]
+    
+    case Discord.Api.edit_message(c_id, m_id, "## #{t}\n#{e}") do
+    {:ok, _updated_message} ->
+      IO.puts("Successfully edited the message!")
+
+    {:error, reason} ->
+      # This will now print the exact error!
+      IO.puts("Failed to edit message. Reason: #{inspect(reason)}")
+  end
+
+  end 
+
+  defp send_response(any, any2) do
+    IO.puts "wtf happened"
   end
 
 end
