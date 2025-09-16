@@ -4,7 +4,7 @@
       "name": "dbot-rtfw",
       "script": "./bin/dbot-rtfw",
       "args": "start",
-      "cwd": "~/dbots/rtfw/_build/prod/rel/dbot_rtfw",
+      "cwd": "dbots/rtfw/_build/prod/rel/dbot_rtfw",
       "interpreter": "none",
       "env": {
         "MIX_ENV": "prod"
