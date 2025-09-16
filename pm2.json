@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "dbot-rtfw",
-      "script": "./bin/dbot-rtfw",
+      "script": "./bin/dbot_rtfw",
       "args": "start",
       "cwd": "_build/prod/rel/dbot_rtfw",
       "interpreter": "none",
