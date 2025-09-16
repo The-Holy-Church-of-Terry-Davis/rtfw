@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "dbot-rtfw",
+      "script": "mix",
+      "args": "run --no-halt",
+      "cwd": "/home/vpsmaster/dbots/rtfw",
+      "interpreter": "bash",
+      "env": {
+        "MIX_ENV": "prod"
+      }
+    }
+  ] 
+}
